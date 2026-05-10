@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeBot Pro - $100K Account</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .account-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .asset-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .asset-btn {
+            padding: 12px;
+            border: 2px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .asset-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .asset-btn:hover {
+            border-color: #667eea;
+        }
+        .asset-info {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .price-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .price-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .price-symbol {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .price-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .price-change {
+            font-size: 12px;
+            color: #666;
+        }
+        .signal-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            margin-bottom: 20px;
+        }
+        .signal-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .signal {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .signal-item {
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+        }
+        .signal-action {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .action-buy {
+            color: #28a745;
+        }
+        .action-sell {
+            color: #dc3545;
+        }
+        .action-wait {
+            color: #ffc107;
+        }
+        .signal-details {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+        }
+        .trade-calculator {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ffc107;
+        }
+        .calc-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .calc-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .calc-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .calc-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+        .pl-tracker {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            margin-bottom: 20px;
+        }
+        .pl-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .pl-progress {
+            width: 100%;
+            height: 30px;
+            background: #ddd;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .pl-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #667eea 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .pl-status {
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+            font-weight: bold;
+        }
+        button {
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .header h1 {
+                font-size: 20px;
+            }
+            .account-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 TradeBot Pro</h1>
+            <p>$100K Account | Target: $400-$500/Day | Max Loss: $100-$150</p>
+        </div>
+
+        <div class="account-stats">
+            <div class="stat-box">
+                <div class="stat-label">Account Value</div>
+                <div class="stat-value">$100,000</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Daily Target</div>
+                <div class="stat-value">$400-$500</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Max Loss</div>
+                <div class="stat-value">$100-$150</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Buying Power</div>
+                <div class="stat-value">$200K+</div>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 15px; color: #333;">Select Asset Class:</h2>
+        <div class="asset-tabs">
+            <button class="asset-btn active" onclick="showAsset('stocks')">📈 Stocks</button>
+            <button class="asset-btn" onclick="showAsset('gold')">🥇 Gold ETF</button>
+            <button class="asset-btn" onclick="showAsset('silver')">⚪ Silver ETF</button>
+            <button class="asset-btn" onclick="showAsset('bitcoin')">₿ Bitcoin ETF</button>
+            <button class="asset-btn" onclick="showAsset('ethereum')">Ξ Ethereum ETF</button>
+        </div>
+
+        <div class="asset-info" id="assetInfo">
+            <h3 style="margin-bottom: 10px;">Major US Stocks</h3>
+            <p style="color: #666; font-size: 12px;">MSFT, TSLA, AAPL, NVDA, AMZN, GOOGL, SPY, QQQ</p>
+        </div>
+
+        <h2 style="margin: 20px 0 15px; color: #333;">Live Prices:</h2>
+        <div class="price-display" id="priceDisplay">
+            <!-- Prices will populate here -->
+        </div>
+
+        <div class="signal-box">
+            <div class="signal-title">📊 Trading Signals</div>
+            <div class="signal" id="signalContainer">
+                <!-- Signals will populate here -->
+            </div>
+        </div>
+
+        <div class="trade-calculator">
+            <div class="calc-title">📐 Trade Calculator for $400-$500 Daily</div>
+            <div class="calc-item">
+                <div>
+                    <div class="calc-label">Asset</div>
+                    <div class="calc-value" id="calcAsset">MSFT</div>
+                </div>
+                <div>
+                    <div class="calc-label">Current Price</div>
+                    <div class="calc-value">$<span id="calcPrice">425</span></div>
+                </div>
+            </div>
+            <div class="calc-item">
+                <div>
+                    <div class="calc-label">Shares to Buy</div>
+                    <div class="calc-value" id="calcShares">47</div>
+                </div>
+                <div>
+                    <div class="calc-label">Risk Per Trade</div>
+                    <div class="calc-value">$<span id="calcRisk">125</span></div>
+                </div>
+            </div>
+            <div class="calc-item">
+                <div>
+                    <div class="calc-label">Entry Price</div>
+                    <div class="calc-value">$<span id="calcEntry">425</span></div>
+                </div>
+                <div>
+                    <div class="calc-label">Target Price (+$400)</div>
+                    <div class="calc-value">$<span id="calcTarget">433.50</span></div>
+                </div>
+            </div>
+            <div class="calc-item">
+                <div>
+                    <div class="calc-label">Stop Loss</div>
+                    <div class="calc-value">$<span id="calcStop">422.00</span></div>
+                </div>
+                <div>
+                    <div class="calc-label">Risk:Reward Ratio</div>
+                    <div class="calc-value" id="calcRatio">1:3.2</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pl-tracker">
+            <div class="pl-title">📈 Daily P&L Progress</div>
+            <div class="pl-progress">
+                <div class="pl-bar" id="plBar" style="width: 0%;">0%</div>
+            </div>
+            <div class="pl-status" id="plStatus">$0 / $450 Goal (0%)</div>
+        </div>
+
+        <div class="button-group">
+            <button onclick="executeBuy()">✅ Execute BUY on IBKR</button>
+            <button onclick="executeSell()">🔴 Execute SELL on IBKR</button>
+            <button onclick="refreshData()">🔄 Refresh Data</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample market data - in production, this would connect to real APIs
+        const assetData = {
+            stocks: {
+                name: 'Major US Stocks',
+                assets: [
+                    { symbol: 'MSFT', price: 425.50, change: 1.2, signal: 'BUY' },
+                    { symbol: 'TSLA', price: 248.75, change: -0.8, signal: 'WAIT' },
+                    { symbol: 'AAPL', price: 182.30, change: 0.5, signal: 'BUY' },
+                    { symbol: 'NVDA', price: 875.40, change: 2.1, signal: 'BUY' },
+                    { symbol: 'AMZN', price: 185.60, change: 0.3, signal: 'WAIT' },
+                    { symbol: 'GOOGL', price: 140.25, change: -0.2, signal: 'SELL' },
+                    { symbol: 'SPY', price: 512.80, change: 0.8, signal: 'BUY' },
+                    { symbol: 'QQQ', price: 425.15, change: 1.5, signal: 'BUY' }
+                ]
+            },
+            gold: {
+                name: 'Gold ETF (GLD)',
+                assets: [
+                    { symbol: 'GLD', price: 198.45, change: 0.6, signal: 'BUY' }
+                ]
+            },
+            silver: {
+                name: 'Silver ETF (SLV)',
+                assets: [
+                    { symbol: 'SLV', price: 29.75, change: 1.2, signal: 'BUY' }
+                ]
+            },
+            bitcoin: {
+                name: 'Bitcoin ETF (IBIT)',
+                assets: [
+                   { symbol: 'IBIT', price: 68450.00, change: 2.5, signal: 'BUY' }
+                ]
+            },
